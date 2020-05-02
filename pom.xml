@@ -8,7 +8,7 @@
 	<parent>
 	    <groupId>ch.rhj</groupId>
 	    <artifactId>rhj-parent</artifactId>
-	    <version>20200502</version>
+	    <version>20200503</version>
 	</parent>
 	
 	<artifactId>rhj-utils</artifactId>
