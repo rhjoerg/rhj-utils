@@ -11,6 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import ch.rhj.util.functions.ThrowingBiConsumer;
 import ch.rhj.util.functions.ThrowingBiFunction;
 import ch.rhj.util.functions.ThrowingConsumer;
 import ch.rhj.util.functions.ThrowingFunction;
@@ -58,6 +59,19 @@ public class ExTests {
 		doThrow(Exception.class).when(throwingConsumer).accept("a");
 		assertThrows(RuntimeException.class, () -> Ex.consumer(throwingConsumer).accept("a"));
 		assertThrows(RuntimeException.class, () -> Ex.consume(throwingConsumer, "a"));
+	}
+
+	@Mock
+	public ThrowingBiConsumer<String, String, Exception> throwingBiConsumer;
+
+	@Test
+	public void testBiConsumer() throws Exception {
+
+		Ex.biConsume(throwingBiConsumer, "a", "b");
+		verify(throwingBiConsumer, times(1)).accept("a", "b");
+
+		doThrow(Exception.class).when(throwingBiConsumer).accept("a", "b");
+		assertThrows(RuntimeException.class, () -> Ex.biConsume(throwingBiConsumer, "a", "b"));
 	}
 
 	@Mock

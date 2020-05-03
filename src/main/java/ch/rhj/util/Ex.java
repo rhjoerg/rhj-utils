@@ -1,10 +1,12 @@
 package ch.rhj.util;
 
+import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import ch.rhj.util.functions.ThrowingBiConsumer;
 import ch.rhj.util.functions.ThrowingBiFunction;
 import ch.rhj.util.functions.ThrowingConsumer;
 import ch.rhj.util.functions.ThrowingFunction;
@@ -20,6 +22,8 @@ public interface Ex {
 
 		return new RuntimeException(t);
 	}
+
+	// ----------------------------------------------------------------------------------------------------------------
 
 	public static Runnable runnable(ThrowingRunnable<? extends Throwable> throwingRunnable) {
 
@@ -38,15 +42,10 @@ public interface Ex {
 
 	public static void run(ThrowingRunnable<? extends Throwable> throwingRunnable) {
 
-		try {
-
-			throwingRunnable.run();
-
-		} catch (Throwable e) {
-
-			throw runtimeException(e);
-		}
+		runnable(throwingRunnable).run();
 	}
+
+	// ----------------------------------------------------------------------------------------------------------------
 
 	public static <T> Consumer<T> consumer(ThrowingConsumer<T, ? extends Throwable> throwingConsumer) {
 
@@ -65,15 +64,32 @@ public interface Ex {
 
 	public static <T> void consume(ThrowingConsumer<T, ? extends Throwable> throwingConsumer, T t) {
 
-		try {
-
-			throwingConsumer.accept(t);
-
-		} catch (Throwable e) {
-
-			throw runtimeException(e);
-		}
+		consumer(throwingConsumer).accept(t);
 	}
+
+	// ----------------------------------------------------------------------------------------------------------------
+
+	public static <T, U> BiConsumer<T, U> biConsumer(ThrowingBiConsumer<T, U, ? extends Throwable> throwingBiConsumer) {
+
+		return (t, u) -> {
+
+			try {
+
+				throwingBiConsumer.accept(t, u);
+
+			} catch (Throwable e) {
+
+				throw runtimeException(e);
+			}
+		};
+	}
+
+	public static <T, U> void biConsume(ThrowingBiConsumer<T, U, ? extends Throwable> throwingBiConsumer, T t, U u) {
+
+		biConsumer(throwingBiConsumer).accept(t, u);
+	}
+
+	// ----------------------------------------------------------------------------------------------------------------
 
 	public static <R> Supplier<R> supplier(ThrowingSupplier<R, ? extends Throwable> throwingSupplier) {
 
@@ -92,15 +108,10 @@ public interface Ex {
 
 	public static <R> R supply(ThrowingSupplier<R, ? extends Throwable> throwingSupplier) {
 
-		try {
-
-			return throwingSupplier.get();
-
-		} catch (Throwable e) {
-
-			throw runtimeException(e);
-		}
+		return supplier(throwingSupplier).get();
 	}
+
+	// ----------------------------------------------------------------------------------------------------------------
 
 	public static <T, R> Function<T, R> function(ThrowingFunction<T, R, ? extends Throwable> throwingFunction) {
 
@@ -119,15 +130,10 @@ public interface Ex {
 
 	public static <T, R> R apply(ThrowingFunction<T, R, ? extends Throwable> throwingFunction, T t) {
 
-		try {
-
-			return throwingFunction.apply(t);
-
-		} catch (Throwable e) {
-
-			throw runtimeException(e);
-		}
+		return function(throwingFunction).apply(t);
 	}
+
+	// ----------------------------------------------------------------------------------------------------------------
 
 	public static <T, U, R> BiFunction<T, U, R> biFunction(ThrowingBiFunction<T, U, R, ? extends Throwable> throwingBiFunction) {
 
@@ -146,13 +152,6 @@ public interface Ex {
 
 	public static <T, U, R> R biApply(ThrowingBiFunction<T, U, R, ? extends Throwable> throwingBiFunction, T t, U u) {
 
-		try {
-
-			return throwingBiFunction.apply(t, u);
-
-		} catch (Throwable e) {
-
-			throw runtimeException(e);
-		}
+		return biFunction(throwingBiFunction).apply(t, u);
 	}
 }
