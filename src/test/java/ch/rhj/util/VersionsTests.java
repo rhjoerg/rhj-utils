@@ -30,12 +30,6 @@ public class VersionsTests {
 	private final Function<TestVersion, String> mapper = v -> v.version;
 
 	@Test
-	public void testCtor() {
-
-		new Versions();
-	}
-
-	@Test
 	public void testStringVersions() {
 
 		String v1 = "1.0.0";

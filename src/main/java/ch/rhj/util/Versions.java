@@ -4,7 +4,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-public class Versions {
+public interface Versions {
 
 	public static <T> VersionComparator<T> comparator(Function<T, String> mapper) {
 
