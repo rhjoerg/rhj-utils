@@ -7,12 +7,12 @@ import java.nio.file.Path;
 
 import org.junit.jupiter.api.Test;
 
-public class PropsTest {
+public class SysPropsTest {
 
 	@Test
 	public void testUserHome() {
 
-		Path directory = Props.userHome();
+		Path directory = SysProps.userHome();
 
 		assertTrue(Files.exists(directory));
 		assertTrue(Files.isDirectory(directory));
@@ -21,7 +21,7 @@ public class PropsTest {
 	@Test
 	public void testWorkingDir() {
 
-		Path directory = Props.workingDir();
+		Path directory = SysProps.workingDir();
 
 		assertTrue(Files.exists(directory));
 		assertTrue(Files.isDirectory(directory));

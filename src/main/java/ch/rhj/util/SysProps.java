@@ -2,7 +2,7 @@ package ch.rhj.util;
 
 import java.nio.file.Path;
 
-public interface Props {
+public interface SysProps {
 
 	public static Path userHome() {
 
