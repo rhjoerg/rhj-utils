@@ -4,11 +4,37 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
+import org.apache.maven.artifact.versioning.ComparableVersion;
+
 public interface Versions {
 
-	public static <T> VersionComparator<T> comparator(Function<T, String> mapper) {
+	public static class Comparator<T> implements java.util.Comparator<T> {
 
-		return VersionComparator.<T>comparator(mapper);
+		private final Function<T, String> mapper;
+
+		public Comparator(Function<T, String> mapper) {
+
+			this.mapper = mapper;
+		}
+
+		@Override
+		public int compare(T o1, T o2) {
+
+			ComparableVersion v1 = new ComparableVersion(mapper.apply(o1));
+			ComparableVersion v2 = new ComparableVersion(mapper.apply(o2));
+
+			return v1.compareTo(v2);
+		}
+
+		public static <T> Comparator<T> comparator(Function<T, String> mapper) {
+
+			return new Comparator<T>(mapper);
+		}
+	}
+
+	public static <T> Versions.Comparator<T> comparator(Function<T, String> mapper) {
+
+		return Comparator.<T>comparator(mapper);
 	}
 
 	public static int compare(String v1, String v2) {
