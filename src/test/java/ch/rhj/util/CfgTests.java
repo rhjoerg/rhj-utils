@@ -6,7 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Arrays;
 import java.util.Properties;
+import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
@@ -81,5 +83,25 @@ public class CfgTests {
 		assertEquals("foobar", sub0.get("foo.bar.baz"));
 		assertEquals("foobar", sub1.get("bar.baz"));
 		assertEquals("foobar", sub2.get("baz"));
+	}
+
+	@Test
+	public void testKeys() {
+
+		Cfg cfg;
+		Set<String> keys;
+
+		cfg = Cfg.cfg("user", true);
+		keys = cfg.keys();
+		assertTrue(keys.contains("home"));
+
+		Properties ps = new Properties();
+
+		ps.setProperty("foo.bar", "foobar");
+
+		cfg = Cfg.cfg("foo", false, Arrays.asList(ps));
+		keys = cfg.keys();
+
+		assertTrue(keys.contains("bar"));
 	}
 }

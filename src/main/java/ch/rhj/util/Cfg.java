@@ -1,12 +1,16 @@
 package ch.rhj.util;
 
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toSet;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.function.BiFunction;
-import java.util.stream.Collectors;
 
 public class Cfg implements BiFunction<String, String, String> {
 
@@ -65,7 +69,7 @@ public class Cfg implements BiFunction<String, String, String> {
 
 		public String resolve(String value, BiFunction<String, String, String> valueProvider) {
 
-			return tokens(value).stream().map(t -> t.resolve(valueProvider)).collect(Collectors.joining());
+			return tokens(value).stream().map(t -> t.resolve(valueProvider)).collect(joining());
 		}
 	}
 
@@ -218,6 +222,30 @@ public class Cfg implements BiFunction<String, String, String> {
 		return get(key, null);
 	}
 
+	public Set<String> keys() {
+
+		if (root == null) {
+
+			Set<String> keys = new TreeSet<>();
+
+			if (system) {
+
+				keys.addAll(System.getProperties().stringPropertyNames());
+				keys.addAll(System.getenv().keySet());
+			}
+
+			store.stream().map(s -> s.stringPropertyNames()).forEach(s -> keys.addAll(s));
+
+			return keys;
+
+		} else {
+
+			int length = prefix.length();
+
+			return root.keys().stream().filter(s -> s.startsWith(prefix)).map(s -> s.substring(length)).collect(toSet());
+		}
+	}
+
 	public Cfg sub(String prefix) {
 
 		return new Cfg(this, prefix);
@@ -245,4 +273,13 @@ public class Cfg implements BiFunction<String, String, String> {
 		return prefix;
 	}
 
+	public static Cfg cfg(String prefix, boolean system, Properties... store) {
+
+		return builder().prefix(prefix).system(system).store(store).build();
+	}
+
+	public static Cfg cfg(String prefix, boolean system, Collection<? extends Properties> store) {
+
+		return cfg(prefix, system, store.toArray(Properties[]::new));
+	}
 }
