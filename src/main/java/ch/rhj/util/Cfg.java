@@ -246,6 +246,11 @@ public class Cfg implements BiFunction<String, String, String> {
 		}
 	}
 
+	public Set<String> values() {
+
+		return keys().stream().map(this::get).collect(toSet());
+	}
+
 	public Cfg sub(String prefix) {
 
 		return new Cfg(this, prefix);

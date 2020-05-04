@@ -86,7 +86,7 @@ public class CfgTests {
 	}
 
 	@Test
-	public void testKeys() {
+	public void testKeysAndValues() {
 
 		Cfg cfg;
 		Set<String> keys;
@@ -103,5 +103,9 @@ public class CfgTests {
 		keys = cfg.keys();
 
 		assertTrue(keys.contains("bar"));
+
+		Set<String> expected = Set.of("foobar");
+
+		assertEquals(expected, cfg.values());
 	}
 }
