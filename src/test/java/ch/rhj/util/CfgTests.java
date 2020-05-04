@@ -17,7 +17,7 @@ public class CfgTests {
 	@Test
 	public void testSystemCfg() {
 
-		Cfg cfg = Cfg.builder().includeSystem(true).includeEnv(true).build();
+		Cfg cfg = Cfg.builder().system(true).build();
 
 		assertEquals(System.getProperty("user.home"), cfg.get("user.home"));
 		assertEquals(System.getenv("PATH"), cfg.get("PATH"));
@@ -27,7 +27,7 @@ public class CfgTests {
 	@Test
 	public void testUserCfg() {
 
-		Cfg cfg = Cfg.builder().prefix("user").includeSystem(true).build();
+		Cfg cfg = Cfg.builder().prefix("user").system(true).build();
 
 		assertEquals(System.getProperty("user.home"), cfg.get("home"));
 	}
@@ -40,7 +40,7 @@ public class CfgTests {
 		properties.put("foo.bar", "${user.home}");
 		properties.put("foo.baz", "${user.home");
 
-		Cfg cfg = Cfg.builder().prefix("foo").includeSystem(true).store(properties).build();
+		Cfg cfg = Cfg.builder().prefix("foo").system(true).store(properties).build();
 
 		assertEquals(System.getProperty("user.home"), cfg.get("bar"));
 		assertEquals("${user.home", cfg.get("baz"));
@@ -52,8 +52,7 @@ public class CfgTests {
 		Builder builder = Cfg.builder();
 
 		assertEquals("", builder.prefix());
-		assertFalse(builder.includeEnv());
-		assertFalse(builder.includeSystem());
+		assertFalse(builder.system());
 
 		assertNotNull(builder.resolver());
 		assertTrue(builder.resolver() == builder.resolver(builder.resolver()).resolver());
@@ -65,5 +64,22 @@ public class CfgTests {
 
 		assertEquals("", Cfg.fixPrefix(null));
 		assertEquals("foo.", Cfg.fixPrefix("foo."));
+	}
+
+	@Test
+	public void testSub() {
+
+		Properties properties = new Properties();
+
+		properties.put("foo.bar.baz", "foobar");
+
+		Cfg cfg = Cfg.builder().store(properties).build();
+		Cfg sub0 = cfg.sub("");
+		Cfg sub1 = cfg.sub("foo");
+		Cfg sub2 = sub1.sub("bar");
+
+		assertEquals("foobar", sub0.get("foo.bar.baz"));
+		assertEquals("foobar", sub1.get("bar.baz"));
+		assertEquals("foobar", sub2.get("baz"));
 	}
 }

@@ -3,9 +3,7 @@ package ch.rhj.util;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Properties;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
@@ -74,8 +72,7 @@ public class Cfg implements BiFunction<String, String, String> {
 	public static class Builder {
 
 		private String prefix = "";
-		private boolean includeSystem = false;
-		private boolean includeEnv = false;
+		private boolean system = false;
 		private Resolver resolver = new Resolver();
 		private final ArrayList<Properties> store = new ArrayList<>();
 
@@ -90,25 +87,14 @@ public class Cfg implements BiFunction<String, String, String> {
 			return this;
 		}
 
-		public boolean includeSystem() {
+		public boolean system() {
 
-			return includeSystem;
+			return system;
 		}
 
-		public Builder includeSystem(boolean includeSystem) {
+		public Builder system(boolean system) {
 
-			this.includeSystem = includeSystem;
-			return this;
-		}
-
-		public boolean includeEnv() {
-
-			return includeEnv;
-		}
-
-		public Builder includeEnv(boolean includeEnv) {
-
-			this.includeEnv = includeEnv;
+			this.system = system;
 			return this;
 		}
 
@@ -137,7 +123,7 @@ public class Cfg implements BiFunction<String, String, String> {
 
 		public Cfg build() {
 
-			return new Cfg(prefix, includeSystem, includeEnv, resolver, store);
+			return new Cfg(prefix, system, resolver, store);
 		}
 	}
 
@@ -149,11 +135,99 @@ public class Cfg implements BiFunction<String, String, String> {
 	public final Cfg root;
 
 	public final String prefix;
-	public final boolean includeSystem;
-	public final boolean includeEnv;
+	public final boolean system;
 	public final Resolver resolver;
 
-	private final LinkedList<Properties> store;
+	private final ArrayList<Properties> store = new ArrayList<>();
+
+	public Cfg(String prefix, boolean system, Resolver resolver, Collection<? extends Properties> store) {
+
+		this.prefix = fixPrefix(prefix);
+		this.system = system;
+		this.resolver = resolver;
+
+		if (this.prefix.isEmpty()) {
+
+			this.root = null;
+			this.store.addAll(store);
+
+		} else {
+
+			this.root = new Cfg("", system, resolver, store);
+		}
+	}
+
+	public Cfg(Cfg cfg, String prefix) {
+
+		this.prefix = fixPrefix(cfg.prefix + prefix);
+		this.system = cfg.system;
+		this.resolver = cfg.resolver;
+
+		if (this.prefix.isEmpty()) {
+
+			this.root = null;
+			this.store.addAll(cfg.store);
+
+		} else {
+
+			if (cfg.root == null) {
+
+				this.root = new Cfg("", system, resolver, cfg.store);
+
+			} else {
+
+				this.root = cfg.root;
+			}
+		}
+	}
+
+	public String resolve(String value) {
+
+		if (value == null)
+			return value;
+
+		return resolver.resolve(value, this.root == null ? this : this.root);
+	}
+
+	public String get(String key, String defaultValue) {
+
+		String prefixedKey = prefix + key;
+
+		if (root != null) {
+
+			return root.get(prefixedKey, defaultValue);
+		}
+
+		if (system) {
+
+			String result;
+
+			if ((result = System.getProperty(prefixedKey)) != null)
+				return resolve(result);
+
+			if ((result = System.getenv(prefixedKey)) != null)
+				return resolve(result);
+		}
+
+		return resolve(store.stream().filter(p -> p.containsKey(prefixedKey)).findFirst() //
+				.map(p -> p.getProperty(prefixedKey)).orElse(defaultValue));
+	}
+
+	public String get(String key) {
+
+		return get(key, null);
+	}
+
+	public Cfg sub(String prefix) {
+
+		return new Cfg(this, prefix);
+	}
+
+	@Override
+	public String apply(String key, String defaultValue) {
+
+		return get(key, defaultValue);
+	}
 
 	public static String fixPrefix(String prefix) {
 
@@ -171,71 +245,4 @@ public class Cfg implements BiFunction<String, String, String> {
 		return prefix;
 	}
 
-	public Cfg(String prefix, boolean includeSystem, boolean includeEnv, Resolver resolver, Collection<? extends Properties> store) {
-
-		this.prefix = fixPrefix(prefix);
-		this.includeSystem = includeSystem;
-		this.includeEnv = includeEnv;
-		this.resolver = resolver;
-		this.store = new LinkedList<>();
-
-		if (this.prefix.isEmpty()) {
-
-			this.root = null;
-			this.store.addAll(store);
-
-		} else {
-
-			this.root = new Cfg("", includeSystem, includeEnv, resolver, store);
-		}
-	}
-
-	public String resolve(String value) {
-
-		return resolver.resolve(value, this.root == null ? this : this.root);
-	}
-
-	public String get(String key, String defaultValue) {
-
-		String prefixedKey = prefix + key;
-
-		if (root != null) {
-
-			return root.get(prefixedKey, defaultValue);
-		}
-
-		if (includeSystem) {
-
-			String result = System.getProperty(prefixedKey);
-
-			if (result != null)
-				return resolve(result);
-		}
-
-		if (includeEnv) {
-
-			String result = System.getenv(prefixedKey);
-
-			if (result != null)
-				return resolve(result);
-		}
-
-		Optional<Properties> properties = store.stream().filter(p -> p.containsKey(prefixedKey)).findFirst();
-
-		if (properties.isEmpty())
-			return defaultValue;
-
-		return resolve(properties.get().getProperty(prefixedKey));
-	}
-
-	public String get(String key) {
-
-		return get(key, null);
-	}
-
-	@Override
-	public String apply(String key, String defaultValue) {
-
-		return get(key, defaultValue);
-	}
 }
