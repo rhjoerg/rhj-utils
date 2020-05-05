@@ -287,4 +287,9 @@ public class Cfg implements BiFunction<String, String, String> {
 
 		return cfg(prefix, system, store.toArray(Properties[]::new));
 	}
+
+	public static Cfg system() {
+
+		return cfg("", true);
+	}
 }

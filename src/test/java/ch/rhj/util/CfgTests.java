@@ -19,7 +19,7 @@ public class CfgTests {
 	@Test
 	public void testSystemCfg() {
 
-		Cfg cfg = Cfg.builder().system(true).build();
+		Cfg cfg = Cfg.system();
 
 		assertEquals(System.getProperty("user.home"), cfg.get("user.home"));
 		assertEquals(System.getenv("PATH"), cfg.get("PATH"));
