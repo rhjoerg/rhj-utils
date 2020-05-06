@@ -4,6 +4,11 @@ import java.nio.file.Path;
 
 public interface SysProps {
 
+	public static String userName() {
+
+		return System.getProperty("user.name");
+	}
+
 	public static Path userHome() {
 
 		return Path.of(System.getProperty("user.home"));
