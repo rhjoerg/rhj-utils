@@ -5,7 +5,7 @@ before_install:
   - echo $GPG_OWNERTRUST | base64 --decode | $GPG_EXECUTABLE --import-ownertrust
 
 install:
-  mvn --settings .maven.xml install -DskipTests=true -B -V
+  mvn install --settings .maven.xml --batch-mode -Dmaven.test.skip=true
 
 notifications:
   email: false
