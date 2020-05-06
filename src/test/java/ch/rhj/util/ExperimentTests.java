@@ -2,7 +2,7 @@ package ch.rhj.util;
 
 import org.junit.jupiter.api.Test;
 
-public class Experiments {
+public class ExperimentTests {
 
 	@Test
 	public void experiment1() {
