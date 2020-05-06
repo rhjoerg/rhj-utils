@@ -18,26 +18,6 @@
 	<profiles>
 	
 		<profile>
-			<id>with-google-repo</id>
-			<repositories>
-				<repository>
-					<id>01-google-repo</id>
-					<url>https://maven-central-eu.storage-download.googleapis.com/maven2/</url>
-				</repository>
-			</repositories>
-		</profile>
-		
-		<profile>
-			<id>with-central-repo</id>
-			<repositories>
-				<repository>
-					<id>02-central-repo</id>
-					<url>https://repo.maven.apache.org/maven2/</url>
-				</repository>
-			</repositories>
-		</profile>
-	
-		<profile>
 			<id>gpg</id>
              <properties>
             	<gpg.executable>${env.GPG_EXECUTABLE}</gpg.executable>
@@ -48,8 +28,6 @@
 	</profiles>
 	
 	<activeProfiles>
-		<activeProfile>with-google-repo</activeProfile>
-		<activeProfile>with-central-repo</activeProfile>
 		<activeProfile>gpg</activeProfile>
 	</activeProfiles>
 

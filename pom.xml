@@ -41,4 +41,20 @@
 
 	</dependencies>
 	
+	<!-- TODO: move to rhj-parent -->
+	
+	<repositories>
+	
+		<repository>
+			<id>01-google-mirror</id>
+			<url>https://maven-central-eu.storage-download.googleapis.com/maven2/</url>
+		</repository>
+		
+		<repository>
+			<id>02-central</id>
+			<url>https://repo.maven.apache.org/maven2/</url>
+		</repository>
+	
+	</repositories>
+	
 </project>
