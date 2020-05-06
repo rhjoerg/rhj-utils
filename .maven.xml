@@ -21,7 +21,7 @@
 			<id>with-google-repo</id>
 			<repositories>
 				<repository>
-					<id>google-repo</id>
+					<id>01-google-repo</id>
 					<url>https://maven-central-eu.storage-download.googleapis.com/maven2/</url>
 				</repository>
 			</repositories>
@@ -31,7 +31,7 @@
 			<id>with-central-repo</id>
 			<repositories>
 				<repository>
-					<id>central-repo</id>
+					<id>02-central-repo</id>
 					<url>https://repo.maven.apache.org/maven2/</url>
 				</repository>
 			</repositories>
