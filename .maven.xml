@@ -3,16 +3,7 @@
         xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
                             http://maven.apache.org/xsd/settings-1.0.0.xsd">
 
-	<mirrors>
-	
-		<mirror>
-			<id>google-maven-central</id>
-			<name>GCS Maven Central mirror EU</name>
-			<url>https://maven-central-eu.storage-download.googleapis.com/maven2/</url>
-			<mirrorOf>central</mirrorOf>
-		</mirror>
-	
-	</mirrors>
+	<interactiveMode>false</interactiveMode>
 
 	<servers>
 	
@@ -27,15 +18,39 @@
 	<profiles>
 	
 		<profile>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
+			<id>with-google-repo</id>
+			<repositories>
+				<repository>
+					<id>google-repo</id>
+					<url>https://maven-central-eu.storage-download.googleapis.com/maven2/</url>
+				</repository>
+			</repositories>
+		</profile>
+		
+		<profile>
+			<id>with-central-repo</id>
+			<repositories>
+				<repository>
+					<id>central-repo</id>
+					<url>https://repo.maven.apache.org/maven2/</url>
+				</repository>
+			</repositories>
+		</profile>
+	
+		<profile>
+			<id>gpg</id>
+             <properties>
             	<gpg.executable>${env.GPG_EXECUTABLE}</gpg.executable>
                 <gpg.passphrase>${env.GPG_PASSPHRASE}</gpg.passphrase>
             </properties>
 		</profile>
 	
 	</profiles>
+	
+	<activeProfiles>
+		<activeProfile>with-google-repo</activeProfile>
+		<activeProfile>with-central-repo</activeProfile>
+		<activeProfile>gpg</activeProfile>
+	</activeProfiles>
 
 </settings>
