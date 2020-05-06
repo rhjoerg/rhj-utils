@@ -1,0 +1,15 @@
+language: java
+
+before_install:
+  - echo $GPG_SECRET_KEYS | base64 --decode | $GPG_EXECUTABLE --import
+  - echo $GPG_OWNERTRUST | base64 --decode | $GPG_EXECUTABLE --import-ownertrust
+
+install:
+  mvn --settings .maven.xml deploy -DskipTests=true -B -V
+
+notifications:
+  email: false
+
+cache:
+  directories:
+  - ~/.m2

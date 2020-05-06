@@ -8,11 +8,10 @@
 	<parent>
 	    <groupId>ch.rhj</groupId>
 	    <artifactId>rhj-parent</artifactId>
-	    <version>20200503</version>
+	    <version>20200505</version>
 	</parent>
 	
 	<artifactId>rhj-utils</artifactId>
-	<!-- <version>20200502</version> -->
 	<packaging>jar</packaging>
 	
 	<name>RHJ Utils</name>
