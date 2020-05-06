@@ -8,13 +8,11 @@
 	<parent>
 	    <groupId>ch.rhj</groupId>
 	    <artifactId>rhj-parent</artifactId>
-	    <version>20200506.2</version>
+	    <version>20200506.4</version>
 	</parent>
 	
 	<artifactId>rhj-utils</artifactId>
 	<packaging>jar</packaging>
-	
-	<version>20200506.3</version>
 	
 	<name>RHJ Utils</name>
 	<description>RHJ Utils</description>
