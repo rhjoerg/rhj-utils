@@ -1,4 +1,4 @@
-package ch.rhj.util.functions;
+package ch.rhj.util.function;
 
 public interface ThrowingBiFunction<T, U, R, E extends Throwable> {
 

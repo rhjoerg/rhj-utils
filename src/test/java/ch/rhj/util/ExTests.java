@@ -11,12 +11,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import ch.rhj.util.functions.ThrowingBiConsumer;
-import ch.rhj.util.functions.ThrowingBiFunction;
-import ch.rhj.util.functions.ThrowingConsumer;
-import ch.rhj.util.functions.ThrowingFunction;
-import ch.rhj.util.functions.ThrowingRunnable;
-import ch.rhj.util.functions.ThrowingSupplier;
+import ch.rhj.util.function.ThrowingBiConsumer;
+import ch.rhj.util.function.ThrowingBiFunction;
+import ch.rhj.util.function.ThrowingConsumer;
+import ch.rhj.util.function.ThrowingFunction;
+import ch.rhj.util.function.ThrowingRunnable;
+import ch.rhj.util.function.ThrowingSupplier;
 
 @ExtendWith(MockitoExtension.class)
 public class ExTests {

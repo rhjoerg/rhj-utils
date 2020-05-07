@@ -1,4 +1,4 @@
-package ch.rhj.util;
+package ch.rhj.util.config;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -12,7 +12,7 @@ import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
-import ch.rhj.util.Cfg.Builder;
+import ch.rhj.util.config.Cfg.Builder;
 
 public class CfgTests {
 

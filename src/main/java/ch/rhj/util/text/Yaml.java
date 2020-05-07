@@ -1,4 +1,4 @@
-package ch.rhj.util;
+package ch.rhj.util.text;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;

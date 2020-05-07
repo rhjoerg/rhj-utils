@@ -1,4 +1,4 @@
-package ch.rhj.util.functions;
+package ch.rhj.util.function;
 
 @FunctionalInterface
 public interface ThrowingRunnable<E extends Throwable> {

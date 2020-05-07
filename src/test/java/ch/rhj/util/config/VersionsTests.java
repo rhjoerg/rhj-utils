@@ -1,4 +1,4 @@
-package ch.rhj.util;
+package ch.rhj.util.config;
 
 import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.assertEquals;

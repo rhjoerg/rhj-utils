@@ -6,12 +6,12 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import ch.rhj.util.functions.ThrowingBiConsumer;
-import ch.rhj.util.functions.ThrowingBiFunction;
-import ch.rhj.util.functions.ThrowingConsumer;
-import ch.rhj.util.functions.ThrowingFunction;
-import ch.rhj.util.functions.ThrowingRunnable;
-import ch.rhj.util.functions.ThrowingSupplier;
+import ch.rhj.util.function.ThrowingBiConsumer;
+import ch.rhj.util.function.ThrowingBiFunction;
+import ch.rhj.util.function.ThrowingConsumer;
+import ch.rhj.util.function.ThrowingFunction;
+import ch.rhj.util.function.ThrowingRunnable;
+import ch.rhj.util.function.ThrowingSupplier;
 
 public interface Ex {
 

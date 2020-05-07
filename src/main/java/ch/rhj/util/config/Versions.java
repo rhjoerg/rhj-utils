@@ -1,4 +1,4 @@
-package ch.rhj.util;
+package ch.rhj.util.config;
 
 import java.util.Optional;
 import java.util.function.Function;

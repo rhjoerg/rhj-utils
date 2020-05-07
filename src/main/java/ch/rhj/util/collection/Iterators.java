@@ -1,4 +1,4 @@
-package ch.rhj.util;
+package ch.rhj.util.collection;
 
 import static java.util.Spliterators.spliteratorUnknownSize;
 import static java.util.stream.Collectors.toList;

@@ -1,4 +1,4 @@
-package ch.rhj.util.functions;
+package ch.rhj.util.function;
 
 @FunctionalInterface
 public interface ThrowingBiConsumer<T, U, E extends Throwable> {

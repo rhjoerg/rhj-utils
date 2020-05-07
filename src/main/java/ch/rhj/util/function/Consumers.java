@@ -1,4 +1,4 @@
-package ch.rhj.util;
+package ch.rhj.util.function;
 
 import java.util.function.Consumer;
 

@@ -1,4 +1,4 @@
-package ch.rhj.util;
+package ch.rhj.util.text;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class YamlTests {
+public class JsonTests {
 
 	@JsonIgnoreProperties(ignoreUnknown = true)
 	public static class Hello {
@@ -23,10 +23,10 @@ public class YamlTests {
 	@Test
 	public void testRead() throws Exception {
 
-		URL url = getClass().getClassLoader().getResource("hello.yaml");
+		URL url = getClass().getClassLoader().getResource("hello.json");
 		Path path = Path.of(url.toURI());
 		byte[] bytes = Files.readAllBytes(path);
-		Hello hello = Yaml.read(bytes, Hello.class);
+		Hello hello = Json.read(bytes, Hello.class);
 
 		assertEquals("hello, world!", hello.hello);
 	}

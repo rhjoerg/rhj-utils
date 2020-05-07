@@ -1,24 +1,25 @@
-package ch.rhj.util;
+package ch.rhj.util.collection;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-public class IterablesTests {
+public class IteratorsTests {
 
 	@Test
 	public void testCast() {
 
 		List<Integer> list = Arrays.asList(1, 2, 3);
 		@SuppressWarnings("rawtypes")
-		Iterable uncheckedIterable = list;
-		Iterable<Integer> iterable = Iterables.iterable(uncheckedIterable);
+		Iterator rawIterator = list.iterator();
+		Iterator<Integer> iterator = Iterators.iterator(rawIterator);
 
-		assertTrue(list == iterable);
+		assertTrue(iterator == rawIterator);
 	}
 
 	@Test
@@ -26,14 +27,14 @@ public class IterablesTests {
 
 		List<Integer> list = Arrays.asList(1, 2, 3);
 
-		assertEquals(3, Iterables.stream(list).max((x, y) -> Integer.compare(x, y)).get());
+		assertEquals(3, Iterators.stream(list.iterator()).max((x, y) -> Integer.compare(x, y)).get());
 	}
 
 	@Test
 	public void testList() {
 
 		List<Integer> expected = Arrays.asList(1, 2, 3);
-		List<Integer> actual = Iterables.list(expected);
+		List<Integer> actual = Iterators.list(expected.iterator());
 
 		assertEquals(expected, actual);
 	}

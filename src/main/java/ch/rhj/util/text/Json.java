@@ -1,6 +1,8 @@
-package ch.rhj.util;
+package ch.rhj.util.text;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import ch.rhj.util.Ex;
 
 public interface Json {
 
