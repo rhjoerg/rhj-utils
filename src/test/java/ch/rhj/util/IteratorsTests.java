@@ -29,4 +29,13 @@ public class IteratorsTests {
 
 		assertEquals(3, Iterators.stream(list.iterator()).max((x, y) -> Integer.compare(x, y)).get());
 	}
+
+	@Test
+	public void testList() {
+
+		List<Integer> expected = Arrays.asList(1, 2, 3);
+		List<Integer> actual = Iterators.list(expected.iterator());
+
+		assertEquals(expected, actual);
+	}
 }
