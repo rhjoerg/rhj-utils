@@ -44,6 +44,11 @@
 			<artifactId>commons-compress</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcpg-jdk15on</artifactId>
+		</dependency>
+
 	</dependencies>
 	
 </project>
