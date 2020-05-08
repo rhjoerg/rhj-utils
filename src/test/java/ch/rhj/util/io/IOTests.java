@@ -145,7 +145,7 @@ public class IOTests {
 
 		assertEquals(expected, actual);
 
-		actual = IO.applyToInput(() -> Files.newInputStream(path), i -> IO.readString(i, UTF_8));
+		actual = IO.apply(() -> Files.newInputStream(path), i -> IO.readString(i, UTF_8));
 
 		assertEquals(expected, actual);
 	}

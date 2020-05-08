@@ -171,7 +171,7 @@ public interface IO {
 		});
 	}
 
-	public static <I extends InputStream, T> T applyToInput(ThrowingSupplier<I, ? extends Throwable> open,
+	public static <I extends InputStream, T> T apply(ThrowingSupplier<I, ? extends Throwable> open,
 			ThrowingFunction<? super I, T, ? extends Throwable> function) {
 
 		return Ex.supply(() -> {
@@ -212,7 +212,7 @@ public interface IO {
 
 	public static byte[] read(Path path) {
 
-		return applyToInput(inputStream(path), IO::read);
+		return apply(inputStream(path), IO::read);
 	}
 
 	// ----------------------------------------------------------------------------------------------------------------
@@ -443,7 +443,7 @@ public interface IO {
 
 	public static List<String> readLines(Path path, Charset charset) {
 
-		return applyToInput(inputStream(path), i -> readLines(i, charset));
+		return apply(inputStream(path), i -> readLines(i, charset));
 	}
 
 	// ----------------------------------------------------------------------------------------------------------------

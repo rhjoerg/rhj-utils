@@ -5,9 +5,7 @@ import java.util.function.Supplier;
 public class Singleton<T> implements Supplier<T> {
 
 	private final Supplier<? extends T> creator;
-	private final Object valueLock = new Object();
-
-	private volatile T value;
+	private T value;
 
 	public Singleton(Supplier<? extends T> creator) {
 
@@ -15,20 +13,19 @@ public class Singleton<T> implements Supplier<T> {
 	}
 
 	@Override
-	public T get() {
+	public synchronized T get() {
 
 		if (value == null) {
 
-			synchronized (valueLock) {
-
-				if (value == null) {
-
-					value = creator.get();
-				}
-			}
+			value = creator.get();
 		}
 
 		return value;
+	}
+
+	public synchronized boolean hasValue() {
+
+		return value != null;
 	}
 
 	public static <T> Singleton<T> singleton(Supplier<? extends T> creator) {

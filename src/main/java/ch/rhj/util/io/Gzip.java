@@ -18,7 +18,7 @@ public interface Gzip {
 
 	public static byte[] extract(InputStream input) {
 
-		return IO.applyToInput(gzipCompressorInputStream(input), IO::read);
+		return IO.apply(gzipCompressorInputStream(input), IO::read);
 	}
 
 	public static byte[] extract(byte[] bytes) {
@@ -28,7 +28,7 @@ public interface Gzip {
 
 	public static byte[] extract(Path path) {
 
-		return IO.applyToInput(IO.inputStream(path), Gzip::extract);
+		return IO.apply(IO.inputStream(path), Gzip::extract);
 	}
 
 	public static void extract(InputStream input, Path target, boolean replace) {
