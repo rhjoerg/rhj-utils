@@ -23,19 +23,27 @@ import java.nio.file.CopyOption;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystemNotFoundException;
 import java.nio.file.FileSystems;
+import java.nio.file.FileVisitOption;
+import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.SimpleFileVisitor;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.spi.FileSystemProvider;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Predicate;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 
@@ -63,6 +71,14 @@ public interface IO {
 		public static OpenOption[] openOptions(boolean replace) {
 
 			return (replace ? REPLACE_OPEN_OPTIONS : NO_OPEN_OPTIONS).clone();
+		}
+
+		private final static FileVisitOption[] NO_FILE_VISIT_OPTIONS = {};
+		private final static FileVisitOption[] FOLLOW_LINKS_VISIT_OPTIONS = { FileVisitOption.FOLLOW_LINKS };
+
+		public static FileVisitOption[] fileVisitOptions(boolean followLinks) {
+
+			return (followLinks ? FOLLOW_LINKS_VISIT_OPTIONS : NO_FILE_VISIT_OPTIONS).clone();
 		}
 	}
 
@@ -428,5 +444,59 @@ public interface IO {
 	public static List<String> readLines(Path path, Charset charset) {
 
 		return applyToInput(inputStream(path), i -> readLines(i, charset));
+	}
+
+	// ----------------------------------------------------------------------------------------------------------------
+
+	public static class FindVisitor extends SimpleFileVisitor<Path> {
+
+		private final ArrayList<Path> paths = new ArrayList<>();
+
+		public Stream<Path> paths() {
+
+			return paths.stream();
+		}
+
+		@Override
+		public FileVisitResult visitFile(Path path, BasicFileAttributes attrs) throws IOException {
+
+			paths.add(path);
+
+			return super.visitFile(path, attrs);
+		}
+
+		@Override
+		public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
+
+			return FileVisitResult.SKIP_SUBTREE;
+		}
+	}
+
+	public static Stream<Path> find(Path start, boolean followLinks, Predicate<Path> matcher, int maxDepth) {
+
+		FindVisitor visitor = new FindVisitor();
+		Set<FileVisitOption> options = new HashSet<>(Arrays.asList(Options.fileVisitOptions(followLinks)));
+
+		Ex.run(() -> Files.walkFileTree(start, options, maxDepth, visitor));
+
+		return visitor.paths().filter(matcher);
+	}
+
+	public static Stream<Path> findFiles(Path start, boolean followLinks, Predicate<Path> matcher, int maxDepth) {
+
+		return find(start, followLinks, matcher, maxDepth).filter(p -> IO.isDirectory(p));
+	}
+
+	public static boolean hasExtension(Path path, String extension) {
+
+		if (extension.charAt(0) != '.')
+			extension = "." + extension;
+
+		return path.getFileName().toUri().toString().endsWith(extension);
+	}
+
+	public static Stream<Path> findFilesWithExtension(Path start, boolean followLinks, String extension, int maxDepth) {
+
+		return findFiles(start, followLinks, p -> hasExtension(p, extension), maxDepth);
 	}
 }

@@ -194,4 +194,17 @@ public class IOTests {
 
 		assertNull(IO.read(httpClient, request));
 	}
+
+	@Test
+	public void testFind() {
+
+		Path root = SysProps.userHome();
+
+		long count1 = IO.findFiles(root, false, p -> p.toUri().toASCIIString().endsWith(".asc"), 2).count();
+		long count2 = IO.findFilesWithExtension(root, false, ".asc", 2).count();
+		long count3 = IO.findFilesWithExtension(root, false, "asc", 2).count();
+
+		assertEquals(count1, count2);
+		assertEquals(count2, count3);
+	}
 }
