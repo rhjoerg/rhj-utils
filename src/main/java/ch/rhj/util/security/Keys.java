@@ -2,11 +2,11 @@ package ch.rhj.util.security;
 
 import static ch.rhj.util.collection.Iterators.stream;
 import static ch.rhj.util.security.Asc.objects;
-import static ch.rhj.util.security.Fingers.fingerPrint;
-import static ch.rhj.util.security.Pass.secretKeyDecryptor;
+import static ch.rhj.util.security.FingerPrints.fingerPrint;
 import static java.util.stream.Collectors.toList;
 
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
@@ -14,6 +14,8 @@ import java.util.Optional;
 import org.bouncycastle.openpgp.PGPPrivateKey;
 import org.bouncycastle.openpgp.PGPSecretKey;
 import org.bouncycastle.openpgp.PGPSecretKeyRing;
+import org.bouncycastle.openpgp.operator.PBESecretKeyDecryptor;
+import org.bouncycastle.openpgp.operator.jcajce.JcePBESecretKeyDecryptorBuilder;
 
 import ch.rhj.util.Ex;
 import ch.rhj.util.io.IO;
@@ -60,6 +62,11 @@ public interface Keys {
 
 	// ----------------------------------------------------------------------------------------------------------------
 
+	public static PBESecretKeyDecryptor secretKeyDecryptor(String password) {
+
+		return Ex.supply(() -> new JcePBESecretKeyDecryptorBuilder().setProvider(Providers.bc()).build(password.toCharArray()));
+	}
+
 	public static PGPPrivateKey privateKey(PGPSecretKey secretKey, String password) {
 
 		return Ex.supply(() -> secretKey.extractPrivateKey(secretKeyDecryptor(password)));
@@ -76,6 +83,16 @@ public interface Keys {
 	}
 
 	// ----------------------------------------------------------------------------------------------------------------
+
+	public static void write(PGPSecretKeyRing secretKeyRing, OutputStream output) {
+
+		Asc.write(output, o -> secretKeyRing.encode(o));
+	}
+
+	public static void write(PGPSecretKeyRing secretKeyRing, Path output, boolean replace) {
+
+		IO.consumeOutput(IO.outputStream(output, replace), o -> write(secretKeyRing, o));
+	}
 
 	// ----------------------------------------------------------------------------------------------------------------
 

@@ -11,7 +11,7 @@ import org.bouncycastle.openpgp.operator.jcajce.JcaKeyFingerprintCalculator;
 import ch.rhj.util.Ex;
 import ch.rhj.util.math.Integers;
 
-public interface Fingers {
+public interface FingerPrints {
 
 	public static KeyFingerPrintCalculator fingerPrintCalculator() {
 
@@ -37,13 +37,13 @@ public interface Fingers {
 		return fingerPrint(publicKey.getFingerprint());
 	}
 
-	public static String fingerPrint(PGPSecretKey secretKey) {
-
-		return fingerPrint(secretKey.getPublicKey());
-	}
-
 	public static String fingerPrint(PGPPrivateKey privateKey) {
 
 		return fingerPrint(Ex.supply(() -> fingerPrintCalculator().calculateFingerprint(privateKey.getPublicKeyPacket())));
+	}
+
+	public static String fingerPrint(PGPSecretKey secretKey) {
+
+		return fingerPrint(secretKey.getPublicKey());
 	}
 }

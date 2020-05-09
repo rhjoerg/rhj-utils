@@ -119,7 +119,7 @@ public class KeyBuilder {
 		String id = String.format("%1$s <%2$s>", name, email);
 		PGPDigestCalculator digestCalculator = Ex.supply(() -> new BcPGPDigestCalculatorProvider().get(DIGEST_ALGORITHM));
 		PGPSignatureSubpacketVector keySignature = keySignatureGenerator().generate();
-		PGPContentSignerBuilder contentSignerBuilder = Signs.contentSignerBuilder(keyPair().getPrivateKey());
+		PGPContentSignerBuilder contentSignerBuilder = Signatures.contentSignerBuilder(keyPair().getPrivateKey());
 
 		return Ex.supply(() -> new PGPKeyRingGenerator( //
 				CERTIFICATION_LEVEL, keyPair(), id, digestCalculator, //

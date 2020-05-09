@@ -19,7 +19,7 @@ import org.bouncycastle.openpgp.operator.jcajce.JcaPGPContentSignerBuilder;
 import ch.rhj.util.Ex;
 import ch.rhj.util.io.IO;
 
-public interface Signs {
+public interface Signatures {
 
 	public static List<PGPSignatureList> signatureLists(InputStream input) {
 

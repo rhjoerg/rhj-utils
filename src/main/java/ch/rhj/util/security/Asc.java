@@ -1,6 +1,6 @@
 package ch.rhj.util.security;
 
-import static ch.rhj.util.security.Fingers.fingerPrintCalculator;
+import static ch.rhj.util.security.FingerPrints.fingerPrintCalculator;
 import static java.util.stream.Collectors.toList;
 
 import java.io.InputStream;
