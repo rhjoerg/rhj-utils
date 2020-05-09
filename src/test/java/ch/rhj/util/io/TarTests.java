@@ -17,8 +17,8 @@ public class TarTests {
 		IO.delete(dir);
 		IO.write(bytes, path, true);
 
-		Tar.extract(path, name -> name, dir);
-		Tar.extract(bytes, name -> name, dir);
+		Tar.extract(path, name -> name, dir, true);
+		Tar.extract(bytes, name -> name, dir, true);
 
 		IO.delete(dir);
 		IO.write(bytes, path, true);

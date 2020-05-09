@@ -1,7 +1,6 @@
 package ch.rhj.util.io;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.function.Function;
@@ -17,10 +16,10 @@ import ch.rhj.util.function.ThrowingSupplier;
 public interface Tar {
 
 	@FunctionalInterface
-	public static interface TarConsumer extends ThrowingBiConsumer<String, byte[], IOException> {
+	public static interface TarConsumer extends ThrowingBiConsumer<String, byte[], Exception> {
 	}
 
-	private static void doExtract(TarArchiveInputStream input, Predicate<String> filter, ThrowingBiConsumer<String, byte[], IOException> consumer) {
+	private static void doExtract(TarArchiveInputStream input, Predicate<String> filter, TarConsumer consumer) {
 
 		Ex.run(() -> {
 
@@ -33,9 +32,7 @@ public interface Tar {
 				if (!filter.test(name))
 					continue;
 
-				byte[] bytes = IO.read(input);
-
-				consumer.accept(name, bytes);
+				consumer.accept(name, IO.read(input));
 			}
 		});
 	}
@@ -60,21 +57,21 @@ public interface Tar {
 		IO.consumeInput(IO.inputStream(path), i -> extract(i, filter, consumer));
 	}
 
-	public static void extract(InputStream input, Function<String, String> mapper, Path directory) {
+	public static void extract(InputStream input, Function<String, String> mapper, Path directory, boolean replace) {
 
 		Predicate<String> filter = s -> mapper.apply(s) != null;
-		TarConsumer consumer = (name, bytes) -> IO.write(bytes, directory.resolve(mapper.apply(name)), true);
+		TarConsumer consumer = (name, bytes) -> IO.write(bytes, directory.resolve(mapper.apply(name)), replace);
 
 		extract(input, filter, consumer);
 	}
 
-	public static void extract(byte[] bytes, Function<String, String> mapper, Path directory) {
+	public static void extract(byte[] bytes, Function<String, String> mapper, Path directory, boolean replace) {
 
-		extract(new ByteArrayInputStream(bytes), mapper, directory);
+		extract(new ByteArrayInputStream(bytes), mapper, directory, replace);
 	}
 
-	public static void extract(Path path, Function<String, String> mapper, Path directory) {
+	public static void extract(Path path, Function<String, String> mapper, Path directory, boolean replace) {
 
-		IO.consumeInput(IO.inputStream(path), i -> extract(i, mapper, directory));
+		IO.consumeInput(IO.inputStream(path), i -> extract(i, mapper, directory, replace));
 	}
 }
