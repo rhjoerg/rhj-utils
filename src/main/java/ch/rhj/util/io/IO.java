@@ -484,7 +484,7 @@ public interface IO {
 
 	public static Stream<Path> findFiles(Path start, boolean followLinks, Predicate<Path> matcher, int maxDepth) {
 
-		return find(start, followLinks, matcher, maxDepth).filter(p -> IO.isDirectory(p));
+		return find(start, followLinks, matcher, maxDepth).filter(p -> !IO.isDirectory(p));
 	}
 
 	public static boolean hasExtension(Path path, String extension) {
