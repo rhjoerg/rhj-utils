@@ -7,14 +7,38 @@ import ch.rhj.util.io.IO;
 
 public interface TestPaths {
 
+	public static Path inputDirectory(Class<?> type) {
+
+		return IO.classLoaderPath("test-data/" + type.getPackageName()).toAbsolutePath();
+	}
+
+	public static Path outputDirectory(Class<?> type) {
+
+		Path directory = Paths.get("target", "test-data", type.getPackageName()).toAbsolutePath();
+
+		IO.createDirectories(directory);
+
+		return directory;
+	}
+
 	public static Path inputPath(Class<?> type, String name) {
 
-		return IO.classLoaderPath("test-data/" + type.getPackageName() + "/" + name);
+		return inputDirectory(type).resolve(name);
 	}
 
 	public static Path outputPath(Class<?> type, String name) {
 
-		return Paths.get("target", "test-data", type.getPackageName(), name);
+		return outputDirectory(type).resolve(name);
+	}
+
+	default Path inputDirectory() {
+
+		return inputDirectory(getClass());
+	}
+
+	default Path outputDirectory() {
+
+		return outputDirectory(getClass());
 	}
 
 	default Path inputPath(String name) {

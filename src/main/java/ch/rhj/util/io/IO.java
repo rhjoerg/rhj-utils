@@ -48,7 +48,7 @@ import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 import ch.rhj.util.Ex;
-import ch.rhj.util.SysProps;
+import ch.rhj.util.SystemProperties;
 import ch.rhj.util.function.ThrowingConsumer;
 import ch.rhj.util.function.ThrowingFunction;
 import ch.rhj.util.function.ThrowingSupplier;
@@ -329,8 +329,8 @@ public interface IO {
 		paths.addAll(classLoaderPaths(classLoader, "META-INF/" + name));
 		paths.addAll(classLoaderPaths(classLoader, name));
 
-		Path userHomePath = SysProps.userHome().resolve(name);
-		Path userDirPath = SysProps.userDir().resolve(name);
+		Path userHomePath = SystemProperties.userHomeDirectory().resolve(name);
+		Path userDirPath = SystemProperties.workingDirectory().resolve(name);
 
 		if (exists(userHomePath))
 			paths.add(userHomePath);

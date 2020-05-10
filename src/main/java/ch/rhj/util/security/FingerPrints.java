@@ -9,7 +9,6 @@ import org.bouncycastle.openpgp.operator.KeyFingerPrintCalculator;
 import org.bouncycastle.openpgp.operator.jcajce.JcaKeyFingerprintCalculator;
 
 import ch.rhj.util.Ex;
-import ch.rhj.util.math.Integers;
 
 public interface FingerPrints {
 
@@ -27,7 +26,7 @@ public interface FingerPrints {
 		BigInteger big = new BigInteger(bytes);
 
 		if (big.signum() < 0)
-			big = Integers.twosComplement(big);
+			big = big.negate();
 
 		return big.toString(16).toUpperCase();
 	}

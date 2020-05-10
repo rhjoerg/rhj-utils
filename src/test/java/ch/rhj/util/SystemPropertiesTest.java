@@ -8,18 +8,18 @@ import java.nio.file.Path;
 
 import org.junit.jupiter.api.Test;
 
-public class SysPropsTest {
+public class SystemPropertiesTest {
 
 	@Test
 	public void testUserName() {
 
-		assertEquals(System.getProperty("user.name"), SysProps.userName());
+		assertEquals(System.getProperty("user.name"), SystemProperties.userName());
 	}
 
 	@Test
 	public void testUserHome() {
 
-		Path directory = SysProps.userHome();
+		Path directory = SystemProperties.userHomeDirectory();
 
 		assertTrue(Files.exists(directory));
 		assertTrue(Files.isDirectory(directory));
@@ -28,7 +28,7 @@ public class SysPropsTest {
 	@Test
 	public void testWorkingDir() {
 
-		Path directory = SysProps.workingDir();
+		Path directory = SystemProperties.workingDirectory();
 
 		assertTrue(Files.exists(directory));
 		assertTrue(Files.isDirectory(directory));

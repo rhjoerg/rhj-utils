@@ -2,25 +2,20 @@ package ch.rhj.util;
 
 import java.nio.file.Path;
 
-public interface SysProps {
+public interface SystemProperties {
 
 	public static String userName() {
 
 		return System.getProperty("user.name");
 	}
 
-	public static Path userHome() {
+	public static Path userHomeDirectory() {
 
 		return Path.of(System.getProperty("user.home"));
 	}
 
-	public static Path userDir() {
+	public static Path workingDirectory() {
 
 		return Path.of(System.getProperty("user.dir"));
-	}
-
-	public static Path workingDir() {
-
-		return userDir();
 	}
 }
