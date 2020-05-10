@@ -8,6 +8,8 @@ import java.nio.file.FileSystemNotFoundException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.zip.ZipEntry;
@@ -41,10 +43,14 @@ public interface Zip {
 		});
 	}
 
+	// ----------------------------------------------------------------------------------------------------------------
+
 	public static ThrowingSupplier<ZipInputStream, Exception> zipInputStream(InputStream input) {
 
 		return () -> new ZipInputStream(input);
 	}
+
+	// ----------------------------------------------------------------------------------------------------------------
 
 	public static void extract(InputStream input, Predicate<String> filter, ZipConsumer consumer) {
 
@@ -78,6 +84,42 @@ public interface Zip {
 
 		IO.consumeInput(IO.inputStream(path), i -> extract(i, mapper, directory, replace));
 	}
+
+	// ----------------------------------------------------------------------------------------------------------------
+
+	private static Set<String> getNames(ZipInputStream input) {
+
+		Set<String> result = new TreeSet<>();
+
+		Ex.run(() -> {
+
+			ZipEntry entry;
+
+			while ((entry = input.getNextEntry()) != null) {
+
+				result.add(entry.getName());
+			}
+		});
+
+		return result;
+	}
+
+	public static Set<String> names(InputStream input) {
+
+		return IO.apply(zipInputStream(input), i -> getNames(i));
+	}
+
+	public static Set<String> names(byte[] input) {
+
+		return names(new ByteArrayInputStream(input));
+	}
+
+	public static Set<String> names(Path input) {
+
+		return IO.apply(IO.inputStream(input), i -> names(i));
+	}
+
+	// ----------------------------------------------------------------------------------------------------------------
 
 	public static FileSystem fileSystem(Path zip) {
 
