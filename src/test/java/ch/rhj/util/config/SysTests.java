@@ -1,4 +1,4 @@
-package ch.rhj.util;
+package ch.rhj.util.config;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -11,12 +11,14 @@ import java.util.Properties;
 
 import org.junit.jupiter.api.Test;
 
-public class SystemPropertiesTests {
+import ch.rhj.util.config.Sys;
+
+public class SysTests {
 
 	@Test
 	public void testNames() {
 
-		assertTrue(SystemProperties.names().contains("user.name"));
+		assertTrue(Sys.names().contains("user.name"));
 	}
 
 	@Test
@@ -29,10 +31,10 @@ public class SystemPropertiesTests {
 
 		Map<String, String> map = Map.of("user.name", "foo", "SystemPropertiesTests.1", "foo");
 
-		SystemProperties.setIfAbsent("user.name", "foo");
+		Sys.setIfAbsent("user.name", "foo");
 		assertEquals(userName, System.getProperty("user.name"));
 
-		SystemProperties.setIfAbsent(map);
+		Sys.setIfAbsent(map);
 		assertEquals(userName, System.getProperty("user.name"));
 		assertEquals("foo", System.getProperty("SystemPropertiesTests.1"));
 
@@ -40,7 +42,7 @@ public class SystemPropertiesTests {
 		properties.put("user.name", "foo");
 		properties.put("SystemPropertiesTests.2", "bar");
 
-		SystemProperties.setIfAbsent(properties);
+		Sys.setIfAbsent(properties);
 		assertEquals(userName, System.getProperty("user.name"));
 		assertEquals("bar", System.getProperty("SystemPropertiesTests.2"));
 	}
@@ -48,13 +50,13 @@ public class SystemPropertiesTests {
 	@Test
 	public void testUserName() {
 
-		assertEquals(System.getProperty("user.name"), SystemProperties.userName());
+		assertEquals(System.getProperty("user.name"), Sys.userName());
 	}
 
 	@Test
 	public void testUserHome() {
 
-		Path directory = SystemProperties.userHomeDirectory();
+		Path directory = Sys.userHomeDirectory();
 
 		assertTrue(Files.exists(directory));
 		assertTrue(Files.isDirectory(directory));
@@ -63,7 +65,7 @@ public class SystemPropertiesTests {
 	@Test
 	public void testWorkingDir() {
 
-		Path directory = SystemProperties.workingDirectory();
+		Path directory = Sys.workingDirectory();
 
 		assertTrue(Files.exists(directory));
 		assertTrue(Files.isDirectory(directory));
@@ -72,7 +74,7 @@ public class SystemPropertiesTests {
 	@Test
 	public void testCopy() {
 
-		Properties properties = SystemProperties.copy();
+		Properties properties = Sys.copy();
 
 		assertTrue(properties.containsKey("user.name"));
 	}

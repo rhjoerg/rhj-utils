@@ -1,11 +1,11 @@
-package ch.rhj.util;
+package ch.rhj.util.config;
 
 import java.nio.file.Path;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-public interface SystemProperties {
+public interface Sys {
 
 	public static Set<String> names() {
 

@@ -26,7 +26,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import ch.rhj.util.SystemProperties;
+import ch.rhj.util.config.Sys;
 import ch.rhj.util.io.IO.Options;
 
 @ExtendWith(MockitoExtension.class)
@@ -56,7 +56,7 @@ public class IOTests {
 		assertFalse(IO.exists(directory));
 
 		assertEquals(0, IO.list(null).count());
-		assertTrue(IO.list(SystemProperties.userHomeDirectory()).count() > 0);
+		assertTrue(IO.list(Sys.userHomeDirectory()).count() > 0);
 
 		assertFalse(IO.exists(null));
 	}
@@ -103,8 +103,8 @@ public class IOTests {
 		Path userDirSource = IO.classLoaderPath("io/userdir/" + fileName);
 		Path userHomeSource = IO.classLoaderPath("io/userhome/" + fileName);
 
-		Path userDirTarget = SystemProperties.workingDirectory().resolve(fileName);
-		Path userHomeTarget = SystemProperties.userHomeDirectory().resolve(fileName);
+		Path userDirTarget = Sys.workingDirectory().resolve(fileName);
+		Path userHomeTarget = Sys.userHomeDirectory().resolve(fileName);
 
 		try {
 
@@ -198,7 +198,7 @@ public class IOTests {
 	@Test
 	public void testFind() {
 
-		Path root = SystemProperties.userHomeDirectory();
+		Path root = Sys.userHomeDirectory();
 
 		long count1 = IO.findFiles(root, false, p -> p.toUri().toASCIIString().endsWith(".asc"), 2).count();
 		long count2 = IO.findFilesWithExtension(root, false, ".asc", 2).count();
