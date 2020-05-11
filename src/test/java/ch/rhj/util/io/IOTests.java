@@ -127,6 +127,14 @@ public class IOTests {
 	}
 
 	@Test
+	public void testProperties() {
+
+		Properties properties = IO.properties(IO.classLoaderPath("rhj-io.iotests.properties"));
+
+		assertEquals("hello", properties.getProperty("foo2"));
+	}
+
+	@Test
 	public void testAllProperties() {
 
 		List<Properties> all = IO.allProperties("rhj-io.iotests.properties");

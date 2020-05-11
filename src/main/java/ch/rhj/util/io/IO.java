@@ -317,6 +317,11 @@ public interface IO {
 		return properties;
 	}
 
+	public static Properties properties(Path path) {
+
+		return properties(path, new Properties());
+	}
+
 	public static enum PropertyPathsDirection {
 
 		METAINF_TO_USERDIR, USERDIR_TO_METAINF;
