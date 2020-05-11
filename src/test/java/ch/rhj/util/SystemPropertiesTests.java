@@ -68,4 +68,12 @@ public class SystemPropertiesTests {
 		assertTrue(Files.exists(directory));
 		assertTrue(Files.isDirectory(directory));
 	}
+
+	@Test
+	public void testCopy() {
+
+		Properties properties = SystemProperties.copy();
+
+		assertTrue(properties.containsKey("user.name"));
+	}
 }

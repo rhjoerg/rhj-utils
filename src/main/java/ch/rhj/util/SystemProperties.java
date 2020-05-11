@@ -42,4 +42,17 @@ public interface SystemProperties {
 
 		return Path.of(System.getProperty("user.dir"));
 	}
+
+	public static Properties copy() {
+
+		Properties original = System.getProperties();
+		Properties copy = new Properties();
+
+		synchronized (original) {
+
+			copy.putAll(original);
+		}
+
+		return copy;
+	}
 }
