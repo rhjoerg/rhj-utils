@@ -11,8 +11,6 @@ import java.util.Properties;
 
 import org.junit.jupiter.api.Test;
 
-import ch.rhj.util.config.Sys;
-
 public class SysTests {
 
 	@Test
