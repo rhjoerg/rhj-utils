@@ -1,4 +1,4 @@
-package ch.rhj.util.io;
+package ch.rhj.util.io.compression;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 
 import ch.rhj.util.function.ThrowingSupplier;
+import ch.rhj.util.io.IO;
 
 public interface Gzip {
 

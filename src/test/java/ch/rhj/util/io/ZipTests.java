@@ -9,6 +9,7 @@ import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
+import ch.rhj.util.io.compression.Zip;
 import ch.rhj.util.test.TestPaths;
 
 public class ZipTests implements TestPaths {

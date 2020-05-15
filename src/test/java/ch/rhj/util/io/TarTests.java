@@ -5,6 +5,8 @@ import java.nio.file.Paths;
 
 import org.junit.jupiter.api.Test;
 
+import ch.rhj.util.io.compression.Tar;
+
 public class TarTests {
 
 	@Test

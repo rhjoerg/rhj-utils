@@ -5,7 +5,7 @@ import java.nio.file.Paths;
 import org.junit.jupiter.api.Test;
 
 import ch.rhj.util.io.IO;
-import ch.rhj.util.io.Zip;
+import ch.rhj.util.io.compression.Zip;
 
 public class ClassesTests {
 

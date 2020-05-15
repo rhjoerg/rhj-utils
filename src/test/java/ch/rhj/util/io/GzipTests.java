@@ -5,6 +5,8 @@ import java.nio.file.Paths;
 
 import org.junit.jupiter.api.Test;
 
+import ch.rhj.util.io.compression.Gzip;
+
 public class GzipTests {
 
 	@Test

@@ -1,4 +1,4 @@
-package ch.rhj.util.io;
+package ch.rhj.util.io.compression;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -18,6 +18,7 @@ import java.util.zip.ZipInputStream;
 import ch.rhj.util.Ex;
 import ch.rhj.util.function.ThrowingBiConsumer;
 import ch.rhj.util.function.ThrowingSupplier;
+import ch.rhj.util.io.IO;
 
 public interface Zip {
 
