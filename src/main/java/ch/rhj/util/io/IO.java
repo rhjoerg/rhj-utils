@@ -232,6 +232,15 @@ public interface IO {
 		consumeInput(inputStream(source), i -> copy(i, target, replace));
 	}
 
+	// ----------------------------------------------------------------------------------------------------------------
+
+	public static void copyDirectory(Path source, Path target, boolean replace) {
+
+		Ex.supply(() -> Files.newDirectoryStream(source));
+	}
+
+	// ----------------------------------------------------------------------------------------------------------------
+
 	public static FileSystem fileSystem(URL url) {
 
 		String protocol = url.getProtocol();
@@ -453,6 +462,24 @@ public interface IO {
 
 	// ----------------------------------------------------------------------------------------------------------------
 
+	public static String extension(Path path) {
+
+		String fileName = path.getFileName().toUri().toString();
+		int lastDotPos = fileName.lastIndexOf('.');
+
+		return lastDotPos < 0 ? "" : fileName.substring(lastDotPos + 1);
+	}
+
+	public static boolean hasExtension(Path path, String extension) {
+
+		if (extension.charAt(0) == '.')
+			extension = extension.substring(1);
+
+		return extension(path).equals(extension);
+	}
+
+	// ----------------------------------------------------------------------------------------------------------------
+
 	public static class FindVisitor extends SimpleFileVisitor<Path> {
 
 		private final ArrayList<Path> paths = new ArrayList<>();
@@ -490,14 +517,6 @@ public interface IO {
 	public static Stream<Path> findFiles(Path start, boolean followLinks, Predicate<Path> matcher, int maxDepth) {
 
 		return find(start, followLinks, matcher, maxDepth).filter(p -> !IO.isDirectory(p));
-	}
-
-	public static boolean hasExtension(Path path, String extension) {
-
-		if (extension.charAt(0) != '.')
-			extension = "." + extension;
-
-		return path.getFileName().toUri().toString().endsWith(extension);
 	}
 
 	public static Stream<Path> findFilesWithExtension(Path start, boolean followLinks, String extension, int maxDepth) {
